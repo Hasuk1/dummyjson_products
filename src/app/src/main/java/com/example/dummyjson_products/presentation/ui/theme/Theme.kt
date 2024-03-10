@@ -25,11 +25,11 @@ private val LightColorScheme = lightColorScheme(
   secondary = LightGray,
   onSecondary = Color.Black,
   secondaryContainer = White,
-  onSecondaryContainer = Color.Black,
+  onSecondaryContainer = LightDarkBlue,
   surface = CaribbeanGreen,
   inverseSurface = PurpleEggplant,
   scrim = LightBlue,
-  error = Golden
+  error = Golden,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -41,7 +41,7 @@ private val DarkColorScheme = darkColorScheme(
   secondary = DarkLightBlue,
   onSecondary = White,
   secondaryContainer = DarkBlue,
-  onSecondaryContainer = White,
+  onSecondaryContainer = DarkBlueGray,
   surface = PurpleEggplant,
   inverseSurface = CaribbeanGreen,
   scrim = RoyalBlue,

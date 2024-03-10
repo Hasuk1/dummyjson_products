@@ -54,23 +54,23 @@ dependencies {
   implementation(libs.androidx.navigation.dynamic.features.fragment)
   implementation(libs.androidx.navigation.compose)
 
-  implementation (libs.retrofit)
-  implementation (libs.converter.gson)
+  implementation(libs.retrofit)
+  implementation(libs.converter.gson)
   implementation(libs.okhttp)
   implementation(libs.logging.interceptor)
 
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.kotlinx.coroutines.android)
 
-  implementation (libs.coil.compose)
+  implementation(libs.coil.compose)
 
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
   implementation(libs.androidx.lifecycle.livedata.ktx)
 
   implementation(libs.hilt.android)
   kapt(libs.hilt.android.compiler)
-  kapt (libs.androidx.hilt.compiler)
-  implementation (libs.androidx.hilt.navigation.compose)
+  kapt(libs.androidx.hilt.compiler)
+  implementation(libs.androidx.hilt.navigation.compose)
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)

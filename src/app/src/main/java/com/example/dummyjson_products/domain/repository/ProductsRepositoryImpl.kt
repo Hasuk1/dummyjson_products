@@ -15,7 +15,7 @@ class ProductsRepositoryImpl @Inject constructor(
   override suspend fun getProducts(skip: Int, limit: Int): Flow<Resource<List<Product>>> {
     return flow {
       val productsFromApi = try {
-        api.getProductsList(skip,limit)
+        api.getProductsList(skip, limit)
       } catch (e: HttpException) {
         e.printStackTrace()
         emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
