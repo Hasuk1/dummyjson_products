@@ -95,7 +95,7 @@ fun ProductsListScreen(viewModel: ProductListViewModel = hiltViewModel()) {
     ) {
       val lazyVerticalGridState = rememberLazyGridState()
       LazyVerticalGrid(
-        columns = GridCells.Adaptive(200.dp),
+        columns = GridCells.Adaptive(150.dp),
         modifier = Modifier.fillMaxSize(),
         state = lazyVerticalGridState,
       ) {
