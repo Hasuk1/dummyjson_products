@@ -3,13 +3,13 @@ package com.example.dummyjson_products.presentation.products_list
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -87,22 +87,25 @@ fun ProductsListScreen(viewModel: ProductListViewModel = hiltViewModel()) {
       }
     }
   } else {
-    val lazyListState = rememberLazyListState()
     isError = false
-    LazyColumn(
+    Column(
       modifier = Modifier
         .fillMaxSize()
-        .padding(top = 40.dp),
-      state = lazyListState,
-      horizontalAlignment = Alignment.CenterHorizontally,
-      contentPadding = PaddingValues(16.dp)
+        .padding(top = 55.dp, start = 5.dp, end = 5.dp)
     ) {
-      items(productList.size) { index ->
-        ProductCard(productList[index])
-        if (index == productList.size - 1) viewModel.loadMoreProducts()
+      val lazyVerticalGridState = rememberLazyGridState()
+      LazyVerticalGrid(
+        columns = GridCells.Adaptive(200.dp),
+        modifier = Modifier.fillMaxSize(),
+        state = lazyVerticalGridState,
+      ) {
+        items(productList.size) { index ->
+          ProductCard(productList[index]) {
+
+          }
+          if (index == productList.size - 1) viewModel.loadMoreProducts()
+        }
       }
     }
   }
 }
-
-
