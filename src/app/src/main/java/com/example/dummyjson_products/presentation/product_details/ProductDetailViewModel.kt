@@ -1,5 +1,6 @@
-package com.example.dummyjson_products.presentation.products_list
+package com.example.dummyjson_products.presentation.product_details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dummyjson_products.data.Resource
@@ -15,12 +16,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductListViewModel @Inject constructor(
-  private val productsRepository: ProductsRepository
+class ProductDetailViewModel @Inject constructor(
+  private val productsRepository: ProductsRepository,
+  private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-  private val _products = MutableStateFlow<List<Product>>(emptyList())
-  val products = _products.asStateFlow()
+  private val _product = MutableStateFlow(Product())
+  val product = _product.asStateFlow()
 
   private val _showErrorToastChannel = Channel<Boolean>()
   val showErrorToastChannel = _showErrorToastChannel.receiveAsFlow()
@@ -30,44 +31,36 @@ class ProductListViewModel @Inject constructor(
       if (field == value) field = value
     }
 
-  private val pageSize = 20
-  private var currentSkip = 0
-
   init {
-    loadProducts()
+    savedStateHandle.get<String>("productId")?.let { productId ->
+      loadProductDetail(productId.toInt())
+    }
   }
 
-  private fun loadProducts() {
+  private fun loadProductDetail(productId: Int) {
     viewModelScope.launch {
-      productsRepository.getProducts(currentSkip, pageSize).collectLatest { res ->
+      productsRepository.getProductById(productId).collectLatest { res ->
         when (res) {
-          is Resource.Success -> {
-            res.data?.let { products ->
-              _products.value += products
-              currentSkip += pageSize // Move to the next batch
-            }
-          }
-
+          is Resource.Loading -> {}
           is Resource.Error -> {
             _showErrorToastChannel.send(true)
             errorMessage = res.message.toString()
           }
 
-          is Resource.Loading -> {}
+          is Resource.Success -> {
+            res.data?.let { product ->
+              _product.value = product
+            }
+          }
         }
       }
     }
   }
 
   fun refreshProducts() {
-    viewModelScope.launch {
-      currentSkip = 0
-      _products.value = emptyList()
-      loadProducts()
+    savedStateHandle.get<String>("productId")?.let { productId ->
+      loadProductDetail(productId.toInt())
     }
   }
 
-  fun loadMoreProducts() {
-    loadProducts()
-  }
 }

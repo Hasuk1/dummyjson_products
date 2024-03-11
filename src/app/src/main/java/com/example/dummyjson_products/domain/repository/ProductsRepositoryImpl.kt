@@ -32,4 +32,25 @@ class ProductsRepositoryImpl @Inject constructor(
       emit(Resource.Success(productsFromApi.products))
     }
   }
+
+  override suspend fun getProductById(id: Int): Flow<Resource<Product>> {
+    return flow {
+      val productFromApi = try {
+        api.getProductDetail(id)
+      } catch (e: HttpException) {
+        e.printStackTrace()
+        emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
+        return@flow
+      } catch (e: IOException) {
+        e.printStackTrace()
+        emit(Resource.Error("Couldn't reach server. Check your internet connection."))
+        return@flow
+      } catch (e: Exception) {
+        e.printStackTrace()
+        emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
+        return@flow
+      }
+      emit(Resource.Success(productFromApi))
+    }
+  }
 }

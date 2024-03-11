@@ -9,6 +9,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Star
 
 object AppIcons {
   val Add = Icons.Rounded.Add
@@ -19,4 +20,5 @@ object AppIcons {
   val Person = Icons.Rounded.Person
   val Search = Icons.Rounded.Search
   val Settings = Icons.Rounded.Settings
+  val Rating = Icons.Rounded.Star
 }

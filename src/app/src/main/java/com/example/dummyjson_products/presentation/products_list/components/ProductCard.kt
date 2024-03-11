@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,14 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.dummyjson_products.data.remote.Product
+import com.example.dummyjson_products.presentation.ui.icons.AppIcons.Rating
+import kotlin.math.abs
 
 @Composable
 fun ProductCard(productInfo: Product, onClick: () -> Unit) {
   Column(
     modifier = Modifier
-      .clickable {
-        onClick.invoke()
-      }
+      .clickable { onClick.invoke() }
       .padding(5.dp)
       .shadow(
         elevation = 5.dp,
@@ -85,7 +87,8 @@ fun ProductCard(productInfo: Product, onClick: () -> Unit) {
     Text(
       modifier = Modifier
         .padding(top = 0.dp, start = 7.dp, end = 7.dp, bottom = 7.dp)
-        .fillMaxWidth(),
+        .fillMaxWidth()
+        .weight(1f),
       text = productInfo.description,
       fontSize = 12.sp,
       color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -100,22 +103,38 @@ fun ProductCard(productInfo: Product, onClick: () -> Unit) {
         .padding(top = 0.dp, start = 7.dp, end = 7.dp, bottom = 7.dp)
         .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
+      val productPriceDiscount = productInfo.price / 100 * productInfo.discountPercentage
       Text(
-        text = productInfo.price.toString() + "$",
+        text = (productInfo.price - productPriceDiscount).toString() + "$",
         fontSize = 17.sp,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.inverseSurface,
         textAlign = TextAlign.Start
       )
-      Text(
-        modifier = Modifier.padding(5.dp),
-        text = (productInfo.price * 1.1).toInt().toString() + "$",
-        fontSize = 12.sp,
-        color = MaterialTheme.colorScheme.onSecondaryContainer,
-        textAlign = TextAlign.Start,
-        style = TextStyle(
-          textDecoration = TextDecoration.LineThrough
+      if (abs(productPriceDiscount) > 1e-2) {
+        Text(
+          modifier = Modifier.padding(5.dp),
+          text = productInfo.price.toString() + "$",
+          fontSize = 12.sp,
+          color = MaterialTheme.colorScheme.onSecondaryContainer,
+          textAlign = TextAlign.Start,
+          style = TextStyle(
+            textDecoration = TextDecoration.LineThrough
+          )
         )
+      }
+      Spacer(modifier = Modifier.weight(1f))
+      Text(
+        text = String.format("%.1f", productInfo.rating),
+        fontSize = 15.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        textAlign = TextAlign.Start
+      )
+      Icon(
+        imageVector = Rating,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.error
       )
     }
   }

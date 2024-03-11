@@ -1,4 +1,4 @@
-package com.example.dummyjson_products.presentation.products_list
+package com.example.dummyjson_products.presentation.product_details
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -17,16 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.example.dummyjson_products.presentation.products_list.components.EthernetError
-import com.example.dummyjson_products.presentation.products_list.components.ProductList
+import com.example.dummyjson_products.presentation.product_details.components.EthernetError
+import com.example.dummyjson_products.presentation.product_details.components.ProductDetail
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun ProductsListScreen(
-  navController: NavHostController, viewModel: ProductListViewModel = hiltViewModel()
-) {
-  val productList by viewModel.products.collectAsState()
+fun ProductDetailScreen(goBack: () -> Unit, viewModel: ProductDetailViewModel = hiltViewModel()) {
+  val productDetail by viewModel.product.collectAsState()
+
+
   val context = LocalContext.current
   var isError by remember {
     mutableStateOf(false)
@@ -43,7 +42,7 @@ fun ProductsListScreen(
     }
   }
 
-  if (productList.isEmpty()) {
+  if (productDetail.id == 0) {
     Column(
       modifier = Modifier.fillMaxSize(),
       verticalArrangement = Arrangement.Center,
@@ -57,6 +56,10 @@ fun ProductsListScreen(
     }
   } else {
     isError = false
-    ProductList(productList, navController)
+    ProductDetail(productDetail) {
+      goBack.invoke()
+    }
+
   }
 }
+
