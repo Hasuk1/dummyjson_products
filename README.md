@@ -7,7 +7,11 @@ A test application using the [dummyjson](https://dummyjson.com/) api to get a li
 
 ## **Features**
 
-The interface of the product list with a preview of the product's price, rating, name, and brief description has been implemented. There is a search bar on the main screen that allows users to search for products by name. Additionally, there is a screen with detailed product information, where, in addition to the aforementioned information about the product, information about the manufacturer, category, and list of product images is displayed.
+The interface of the product list with a preview of the product's price, rating, name, and brief description has been implemented.
+There is a search bar on the main screen that allows users to search for products by name. Additionally, there is a screen with detailed product information, where,
+in addition to the aforementioned information about the product, information about the manufacturer, category, and list of product images is displayed.
+
+The application also provides a dark and light mode, which changes depending on the user's device settings.
 
 ## **Stack**
 
