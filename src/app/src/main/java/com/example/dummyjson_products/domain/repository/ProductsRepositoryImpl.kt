@@ -12,10 +12,12 @@ import javax.inject.Inject
 class ProductsRepositoryImpl @Inject constructor(
   private val api: DummyJsonApi
 ) : ProductsRepository {
-  override suspend fun getProducts(skip: Int, limit: Int): Flow<Resource<List<Product>>> {
+  override suspend fun getProducts(
+    skip: Int, limit: Int, query: String
+  ): Flow<Resource<List<Product>>> {
     return flow {
       val productsFromApi = try {
-        api.getProductsList(skip, limit)
+        api.getProductsList(skip, limit, query)
       } catch (e: HttpException) {
         e.printStackTrace()
         emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))

@@ -2,6 +2,7 @@ package com.example.dummyjson_products.presentation.product_details
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dummyjson_products.presentation.product_details.components.EthernetError
+import com.example.dummyjson_products.common.MessageBox
 import com.example.dummyjson_products.presentation.product_details.components.ProductDetail
 import kotlinx.coroutines.flow.collectLatest
 
@@ -49,9 +50,13 @@ fun ProductDetailScreen(goBack: () -> Unit, viewModel: ProductDetailViewModel = 
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       if (isError) {
-        EthernetError()
+        MessageBox(message = "Couldn't reach server.\nCheck your internet connection.") {
+          viewModel.refreshProductDetail()
+        }
       } else {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.scrim)
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+          CircularProgressIndicator(color = MaterialTheme.colorScheme.scrim)
+        }
       }
     }
   } else {

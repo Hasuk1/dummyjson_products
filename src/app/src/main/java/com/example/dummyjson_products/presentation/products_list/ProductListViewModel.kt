@@ -25,13 +25,9 @@ class ProductListViewModel @Inject constructor(
   private val _showErrorToastChannel = Channel<Boolean>()
   val showErrorToastChannel = _showErrorToastChannel.receiveAsFlow()
 
-  var errorMessage = ""
-    set(value) {
-      if (field == value) field = value
-    }
-
-  private val pageSize = 20
-  private var currentSkip = 0
+  private val _pageSize = 20
+  private var _currentSkip = 0
+  private var _query = ""
 
   init {
     loadProducts()
@@ -39,18 +35,17 @@ class ProductListViewModel @Inject constructor(
 
   private fun loadProducts() {
     viewModelScope.launch {
-      productsRepository.getProducts(currentSkip, pageSize).collectLatest { res ->
+      productsRepository.getProducts(_currentSkip, _pageSize, _query).collectLatest { res ->
         when (res) {
           is Resource.Success -> {
             res.data?.let { products ->
               _products.value += products
-              currentSkip += pageSize // Move to the next batch
+              _currentSkip += _pageSize // Move to the next batch
             }
           }
 
           is Resource.Error -> {
             _showErrorToastChannel.send(true)
-            errorMessage = res.message.toString()
           }
 
           is Resource.Loading -> {}
@@ -59,9 +54,10 @@ class ProductListViewModel @Inject constructor(
     }
   }
 
-  fun refreshProducts() {
+  fun refreshProductsList(cleanQuery: Boolean = false) {
     viewModelScope.launch {
-      currentSkip = 0
+      _currentSkip = 0
+      if (cleanQuery) _query = ""
       _products.value = emptyList()
       loadProducts()
     }
@@ -69,5 +65,14 @@ class ProductListViewModel @Inject constructor(
 
   fun loadMoreProducts() {
     loadProducts()
+  }
+
+  fun loadFoundProducts(query: String) {
+    viewModelScope.launch {
+      _query = query
+      _currentSkip = 0
+      _products.value = emptyList()
+      loadProducts()
+    }
   }
 }

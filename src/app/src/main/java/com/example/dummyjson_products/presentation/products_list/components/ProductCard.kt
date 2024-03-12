@@ -41,7 +41,6 @@ fun ProductCard(productInfo: Product, onClick: () -> Unit) {
   Column(
     modifier = Modifier
       .clickable { onClick.invoke() }
-      .padding(5.dp)
       .shadow(
         elevation = 5.dp,
         shape = RoundedCornerShape(10.dp),

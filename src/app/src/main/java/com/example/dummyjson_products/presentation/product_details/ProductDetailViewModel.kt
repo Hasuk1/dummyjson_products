@@ -17,19 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
-  private val productsRepository: ProductsRepository,
-  private val savedStateHandle: SavedStateHandle
+  private val productsRepository: ProductsRepository, private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
   private val _product = MutableStateFlow(Product())
   val product = _product.asStateFlow()
 
   private val _showErrorToastChannel = Channel<Boolean>()
   val showErrorToastChannel = _showErrorToastChannel.receiveAsFlow()
-
-  var errorMessage = ""
-    set(value) {
-      if (field == value) field = value
-    }
 
   init {
     savedStateHandle.get<String>("productId")?.let { productId ->
@@ -44,7 +38,6 @@ class ProductDetailViewModel @Inject constructor(
           is Resource.Loading -> {}
           is Resource.Error -> {
             _showErrorToastChannel.send(true)
-            errorMessage = res.message.toString()
           }
 
           is Resource.Success -> {
@@ -57,10 +50,9 @@ class ProductDetailViewModel @Inject constructor(
     }
   }
 
-  fun refreshProducts() {
+  fun refreshProductDetail() {
     savedStateHandle.get<String>("productId")?.let { productId ->
       loadProductDetail(productId.toInt())
     }
   }
-
 }

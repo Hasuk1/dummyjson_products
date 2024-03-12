@@ -7,8 +7,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface DummyJsonApi {
-  @GET("products")
-  suspend fun getProductsList(@Query("skip") skip: Int, @Query("limit") limit: Int = 20): Products
+  @GET("products/search")
+  suspend fun getProductsList(
+    @Query("skip") skip: Int, @Query("limit") limit: Int, @Query("q") query: String
+  ): Products
 
   @GET("products/{productId}")
   suspend fun getProductDetail(@Path("productId") productId: Int): Product
