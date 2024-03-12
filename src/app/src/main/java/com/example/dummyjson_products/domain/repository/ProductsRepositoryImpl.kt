@@ -3,6 +3,7 @@ package com.example.dummyjson_products.domain.repository
 import com.example.dummyjson_products.data.DummyJsonApi
 import com.example.dummyjson_products.data.Resource
 import com.example.dummyjson_products.data.remote.Product
+import com.example.dummyjson_products.data.remote.Products
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -14,7 +15,7 @@ class ProductsRepositoryImpl @Inject constructor(
 ) : ProductsRepository {
   override suspend fun getProducts(
     skip: Int, limit: Int, query: String
-  ): Flow<Resource<List<Product>>> {
+  ): Flow<Resource<Products>> {
     return flow {
       val productsFromApi = try {
         api.getProductsList(skip, limit, query)
@@ -31,7 +32,7 @@ class ProductsRepositoryImpl @Inject constructor(
         emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
         return@flow
       }
-      emit(Resource.Success(productsFromApi.products))
+      emit(Resource.Success(productsFromApi))
     }
   }
 

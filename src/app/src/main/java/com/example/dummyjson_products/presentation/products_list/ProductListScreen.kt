@@ -32,6 +32,7 @@ fun ProductsListScreen(
   navController: NavHostController, viewModel: ProductListViewModel = hiltViewModel()
 ) {
   val productList by viewModel.products.collectAsState()
+  val total by viewModel.total.collectAsState()
   val context = LocalContext.current
   var isError by remember {
     mutableStateOf(false)
@@ -54,6 +55,12 @@ fun ProductsListScreen(
       .fillMaxSize()
       .padding(top = 50.dp, start = 10.dp, end = 10.dp)
   ) {
+    SearchBar(inputValue,
+      searchUnit = { viewModel.loadFoundProducts(inputValue.value) },
+      removeUnit = {
+        viewModel.refreshProductsList(true)
+        inputValue.value = ""
+      })
     if (isError) {
       MessageBox(message = "Couldn't reach server.\nCheck your internet connection.") {
         viewModel.refreshProductsList()
@@ -65,13 +72,8 @@ fun ProductsListScreen(
         }
       } else {
         isError = false
-        SearchBar(inputValue,
-          searchUnit = { viewModel.loadFoundProducts(inputValue.value) },
-          removeUnit = {
-            viewModel.refreshProductsList(true)
-            inputValue.value = ""
-          })
-        if (productList.isEmpty() && inputValue.value != "") {
+
+        if (total == 0 && inputValue.value != "") {
           MessageBox(message = "Nothing was found.\nTry to write the name of the product\nin a different way.") {
             viewModel.refreshProductsList(true)
             inputValue.value = ""

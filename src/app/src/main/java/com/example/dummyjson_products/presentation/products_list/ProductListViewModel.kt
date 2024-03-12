@@ -22,6 +22,9 @@ class ProductListViewModel @Inject constructor(
   private val _products = MutableStateFlow<List<Product>>(emptyList())
   val products = _products.asStateFlow()
 
+  private val _total = MutableStateFlow(0)
+  val total = _total.asStateFlow()
+
   private val _showErrorToastChannel = Channel<Boolean>()
   val showErrorToastChannel = _showErrorToastChannel.receiveAsFlow()
 
@@ -38,9 +41,10 @@ class ProductListViewModel @Inject constructor(
       productsRepository.getProducts(_currentSkip, _pageSize, _query).collectLatest { res ->
         when (res) {
           is Resource.Success -> {
-            res.data?.let { products ->
+            res.data?.products?.let { products ->
               _products.value += products
-              _currentSkip += _pageSize // Move to the next batch
+              _total.value = res.data.total
+              _currentSkip += _pageSize
             }
           }
 
