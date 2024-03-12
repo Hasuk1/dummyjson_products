@@ -2,6 +2,8 @@
 
 A test application using the [dummyjson](https://dummyjson.com/) api to get a list of products. View product details and search for specific products by name.
 
+The source code is located in the src folder. You can also download the [APK-file](https://github.com/Hasuk1/dummyjson_products/tree/main/apk).
+
 ## **Screenshots**
 ![DummyJsonAppScreenshots](https://github.com/Hasuk1/dummyjson_products/blob/main/misc/DummyJsonApp.png)
 
