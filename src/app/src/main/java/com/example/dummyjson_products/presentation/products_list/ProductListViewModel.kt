@@ -41,6 +41,7 @@ class ProductListViewModel @Inject constructor(
       productsRepository.getProducts(_currentSkip, _pageSize, _query).collectLatest { res ->
         when (res) {
           is Resource.Success -> {
+            _showErrorToastChannel.send(false)
             res.data?.products?.let { products ->
               _products.value += products
               _total.value = res.data.total

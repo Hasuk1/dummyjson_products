@@ -41,12 +41,12 @@ fun ProductsListScreen(
 
   LaunchedEffect(key1 = viewModel.showErrorToastChannel) {
     viewModel.showErrorToastChannel.collectLatest { show ->
+      isError = show
       if (show) {
         Toast.makeText(
           context, "Error", Toast.LENGTH_SHORT
         ).show()
-      } 
-       isError = show
+      }
     }
   }
 
@@ -66,6 +66,7 @@ fun ProductsListScreen(
         viewModel.refreshProductsList()
       }
     } else {
+//      isError = false
       if (productList.isEmpty() && inputValue.value == "") {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator(color = MaterialTheme.colorScheme.scrim)
