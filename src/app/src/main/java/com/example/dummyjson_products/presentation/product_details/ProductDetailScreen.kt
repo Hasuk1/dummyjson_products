@@ -34,11 +34,11 @@ fun ProductDetailScreen(goBack: () -> Unit, viewModel: ProductDetailViewModel = 
 
   LaunchedEffect(key1 = viewModel.showErrorToastChannel) {
     viewModel.showErrorToastChannel.collectLatest { show ->
+      isError = show
       if (show) {
         Toast.makeText(
           context, "Error", Toast.LENGTH_SHORT
         ).show()
-        isError = true
       }
     }
   }
@@ -60,11 +60,9 @@ fun ProductDetailScreen(goBack: () -> Unit, viewModel: ProductDetailViewModel = 
       }
     }
   } else {
-    isError = false
     ProductDetail(productDetail) {
       goBack.invoke()
     }
-
   }
 }
 

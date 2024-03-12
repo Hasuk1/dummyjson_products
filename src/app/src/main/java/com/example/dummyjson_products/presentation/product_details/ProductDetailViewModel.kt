@@ -41,6 +41,7 @@ class ProductDetailViewModel @Inject constructor(
           }
 
           is Resource.Success -> {
+            _showErrorToastChannel.send(false)
             res.data?.let { product ->
               _product.value = product
             }
