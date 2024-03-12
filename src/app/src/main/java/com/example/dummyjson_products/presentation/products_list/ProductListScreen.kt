@@ -45,8 +45,8 @@ fun ProductsListScreen(
         Toast.makeText(
           context, "Error", Toast.LENGTH_SHORT
         ).show()
-        isError = true
-      }
+      } 
+       isError = show
     }
   }
 
@@ -71,8 +71,6 @@ fun ProductsListScreen(
           CircularProgressIndicator(color = MaterialTheme.colorScheme.scrim)
         }
       } else {
-        isError = false
-
         if (total == 0 && inputValue.value != "") {
           MessageBox(message = "Nothing was found.\nTry to write the name of the product\nin a different way.") {
             viewModel.refreshProductsList(true)
